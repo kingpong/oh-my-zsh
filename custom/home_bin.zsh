@@ -1,20 +1,20 @@
 
 pathmunge()
 {
-    if [[ -z "$GREP" ]]; then
-        GREP=(/usr/bin/grep /bin/grep)
-        GREP=($^GREP(N))
-    fi
-    if ! echo "$PATH" | $GREP[1] -qE "(^|:)$1($|:)" ; then
-      if [ "$2" = "after" ] ; then
-        PATH="$PATH:$1"
-      else
-        PATH="$1:$PATH"
-      fi
-    fi
+  dir=$1
+  at=$2
+
+  # first remove it if it is there
+  path=(${path#$dir})
+
+  if [[ $at == "after" ]]; then
+      path=($path $dir)
+  else
+      path=($dir $path)
+  fi
 }
 
 if [[ -d "$HOME/bin" ]]; then
-    pathmunge "$HOME/bin"
+  pathmunge "$HOME/bin"
 fi
 
